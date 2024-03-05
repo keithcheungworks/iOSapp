@@ -1,0 +1,44 @@
+import UIKit
+
+struct InventoryItem {
+    var name: String
+    var price: Double
+    var location: String
+}
+
+class InventoryViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
+    
+    var inventory: [InventoryItem] = []
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.dataSource = self
+    }
+
+    @IBAction func addItem(_ sender: Any) {
+        // You can add logic here to display a UIAlertController for the user to input item details
+        // For simplicity, let's use hardcoded values
+        let newItem = InventoryItem(name: "Laptop", price: 1200, location: "Office A")
+        inventory.append(newItem)
+        tableView.reloadData()
+    }
+}
+
+extension InventoryViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return inventory.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "InventoryCell", for: indexPath)
+        let item = inventory[indexPath.row]
+        cell.textLabel?.text = "\(item.name) - $\(item.price)"
+        cell.detailTextLabel?.text = "Location: \(item.location)"
+        return cell
+    }
+}
+
+// In your storyboard, create a table view and a cell with identifier "InventoryCell"
+// Connect the table view to the IBOutlet in the view controller
+// Implement logic to allow the user to add, update, or delete items
